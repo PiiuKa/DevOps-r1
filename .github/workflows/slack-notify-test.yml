@@ -1,0 +1,58 @@
+name: Notify slack of test result
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Tests on (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22, 24]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v3.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: "C0AU0725C6Q"
+            text: |
+              :white_check_mark: *Tests Passed*
+              Repository: ${{ github.repository }}
+              Node.js: ${{ matrix.node-version }}
+              Triggered by: ${{ github.actor }}
+              <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v3.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: "C0AU0725C6Q"
+            text: |
+              :x: *Tests Failed*
+              Repository: ${{ github.repository }}
+              Node.js: ${{ matrix.node-version }}
+              Triggered by: ${{ github.actor }}
+              <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>
