@@ -1,0 +1,23 @@
+{
+  "name": "devops-r1",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/PiiuKa/DevOps-r1#readme",
+  "bugs": {
+    "url": "https://github.com/PiiuKa/DevOps-r1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PiiuKa/DevOps-r1.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "workout.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
