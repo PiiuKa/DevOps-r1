@@ -1,4 +1,9 @@
-import { addExercise, createWorkout, workouts } from "./workout.js";
+import {
+  addExercise,
+  createWorkout,
+  removeExercise,
+  workouts,
+} from "./workout.js";
 
 beforeEach(() => {
   workouts.length = 0;
@@ -41,5 +46,14 @@ describe("addExercise", () => {
     const workout = createWorkout("Heimo Tulo");
     addExercise(workout.id, "squats");
     expect(workout.exercises).toEqual(["squats"]);
+  });
+});
+
+describe("removeExercise", () => {
+  test("add an exercise to the workout", () => {
+    const workout = createWorkout("Heimo Tulo");
+    addExercise(workout.id, "squats");
+    removeExercise(workout.id, "squats");
+    expect(workout.exercises).toEqual([]);
   });
 });

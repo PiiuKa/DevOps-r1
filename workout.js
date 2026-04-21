@@ -18,4 +18,13 @@ const addExercise = (workoutId, exerciseName) => {
   return { workoutId, exerciseName };
 };
 
-export { addExercise, createWorkout, workouts };
+const removeExercise = (workoutId, exerciseName) => {
+  const workout = workouts.find((w) => w.id === workoutId);
+  if (!workout) {
+    throw new Error(`Workout ${workoutId} not found`);
+  }
+  workout.exercises.pop(exerciseName);
+  return { workoutId, exerciseName };
+};
+
+export { addExercise, createWorkout, removeExercise, workouts };
